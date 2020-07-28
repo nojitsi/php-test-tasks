@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ParserServiceProvider::class,
         App\Providers\DataMapperServiceProvider::class,
+        App\Providers\FactoryServiceProvider::class,
     ],
 
     /*

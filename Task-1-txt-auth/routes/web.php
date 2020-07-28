@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth');
-});
+Route::get('/', 'AuthController@viewSignInForm');
 
-Route::post('/auth', 'AuthController@auth');
+Route::post('/login', 'AuthController@auth')->middleware('check.throttle.timeout', 'throttle.login');
+
+Route::get('/user-page', 'AuthController@showUserPage');
+
+Route::get('/logout', 'AuthController@logout');

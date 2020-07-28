@@ -71,11 +71,17 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-                <form method="POST" action="/auth">
+                @if($errors->any())
+                    {!! implode('', $errors->all('<div>:message</div>')) !!}
+                @endif
+                @if(session()->has('message'))
+                    {!! session()->get('message') !!}
+                @endif
+                <form method="POST" action="/login">
                     <div class="auth-form__container">
                         @csrf
-                        <input name="login" placeholder="Enter you'r login here" maxlength="20">
-                        <input name="password" type="password" placeholder="Enter you'r password here" maxlength="20">
+                        <input name="login" placeholder="Enter you'r login here" maxlength="20" value="{{old('login')}}" required>
+                        <input name="password" type="password" placeholder="Enter you'r password here" maxlength="20" required>
                         <input class="login-btn" type="submit" value="Login">
                     </div>
                 </form>
