@@ -21,6 +21,7 @@ class ThrottleTimeoutRefresh
         if ($rateLimitExpirationDate < $now) {
             if ($request->session()->has('X-RateLimit-Expiration-Date')) {
                 $request->session()->put('X-RateLimit-Remaining', ThrottleLoginRequest::MAX_LOGIN_ATTEMPTS);
+                $request->session()->forget('X-RateLimit-Expiration-Date');
             }
             return $next($request);
         }

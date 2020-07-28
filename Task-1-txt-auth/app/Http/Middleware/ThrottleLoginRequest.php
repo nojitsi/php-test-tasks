@@ -19,18 +19,17 @@ class ThrottleLoginRequest
     public function handle($request, Closure $next)
     {
         $response = $next($request);
-
         if ($request->session()->exists('username')) {
             $request->session()->put('X-RateLimit-Remaining', self::MAX_LOGIN_ATTEMPTS);
         }
         else {
-            $remainingLoginAttempts = $request->session()->get('X-RateLimit-Remaining') - 1 ?? self::MAX_LOGIN_ATTEMPTS - 1;
-            if ($remainingLoginAttempts <= 0) {
+            $remainingLoginAttempts = $request->session()->get('X-RateLimit-Remaining') ?? self::MAX_LOGIN_ATTEMPTS;
+            if ($remainingLoginAttempts === 1) {
                 $request->session()->put('X-RateLimit-Expiration-Date', now()->addSeconds(self::LOGIN_TIMEOUT));
                 return redirect('/')->withErrors('Retry after 5 minutes');
             }
             else {
-                $request->session()->put('X-RateLimit-Remaining', $remainingLoginAttempts);
+                $request->session()->put('X-RateLimit-Remaining', $remainingLoginAttempts - 1);
             }
         }
 
